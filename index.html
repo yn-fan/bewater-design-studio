@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="Bewater Design Studio">
-  <title>Bewater Design Studio · 新手上手指南</title>
+  <title>Bewater Design Studio · AI UX-to-Code 工作流实验</title>
   <style>
     :root {
       --color-bg: #f5f6f8;
@@ -2621,7 +2621,7 @@
         </div>
       </div>
       <nav class="steps" id="tutorialSteps" aria-label="教程步骤">
-        <button class="step-button" data-screen="0" aria-current="step"><span class="step-number">1</span><span>认识 Studio</span></button>
+        <button class="step-button" data-screen="0" aria-current="step"><span class="step-number">1</span><span>了解实验</span></button>
         <button class="step-button" data-screen="1"><span class="step-number">2</span><span>安装与启动</span></button>
         <button class="step-button" data-screen="2"><span class="step-number">3</span><span>交给 Workbuddy</span></button>
         <button class="step-button" data-screen="3"><span class="step-number">4</span><span>完成第一个任务</span></button>
@@ -2643,8 +2643,8 @@
       </div>
 
       <section class="screen" data-screen-panel="0" data-active="true">
-        <h1 tabindex="-1">把设计实现，变成设计师自己的工作流。</h1>
-        <p class="lead">Bewater Design Studio 把真实组件、Mock 数据和安全边界放在一起。设置完成后，你可以直接修视觉问题、制作主题或搭建 UI，再交给开发接入正式产品。</p>
+        <h1 tabindex="-1">AI 赋能的 UX-to-Code 工作流实验。</h1>
+        <p class="lead">Bewater Design Studio 正在验证一条更短的路径：让设计师借助 AI，把 UX 意图转成可复用的前端代码。你可以用它修复视觉问题、制作主题或搭建 UI，再由开发接入正式产品。</p>
         <div class="hero-actions">
           <button class="primary" data-next>开始设置</button>
           <a class="secondary" href="http://localhost:3000/designer-studio" target="_blank" rel="noreferrer">打开已安装的 Studio</a>
@@ -2879,14 +2879,16 @@ pnpm designer</pre>
       const toast = document.getElementById('toast');
       const sidebar = document.querySelector('.sidebar');
       const storageKey = 'bewater-design-studio-onboarding';
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const reduceMotion = typeof window.matchMedia === 'function'
+        ? window.matchMedia('(prefers-reduced-motion: reduce)')
+        : { matches: false };
       const memoryStorage = new Map();
       const storage = {
         get(key) {
           try {
             return window.localStorage.getItem(key);
           } catch (error) {
-            if (!(error instanceof DOMException)) throw error;
+            console.warn('Progress will only be saved for this visit.', error);
             return memoryStorage.get(key) ?? null;
           }
         },
@@ -2895,7 +2897,7 @@ pnpm designer</pre>
           try {
             window.localStorage.setItem(key, value);
           } catch (error) {
-            if (!(error instanceof DOMException)) throw error;
+            console.warn('Progress will only be saved for this visit.', error);
           }
         }
       };
@@ -2964,7 +2966,11 @@ pnpm designer</pre>
         tick();
       };
       const update = () => {
-        panels.forEach((panel, index) => panel.dataset.active = String(index === current));
+        panels.forEach((panel, index) => {
+          const active = index === current;
+          panel.dataset.active = String(active);
+          panel.hidden = !active;
+        });
         stepButtons.forEach((button, index) => {
           if (index === current) button.setAttribute('aria-current', 'step');
           else button.removeAttribute('aria-current');
@@ -2975,8 +2981,23 @@ pnpm designer</pre>
         progressText.textContent = `${completed.size} / ${panels.length} 完成`;
         prevButton.hidden = current === 0;
         nextButton.textContent = current === panels.length - 1 ? '完成教程' : '下一步';
-        window.scrollTo({ top: 0, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+        try {
+          window.scrollTo({ top: 0, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+        } catch (error) {
+          if (!(error instanceof TypeError)) throw error;
+          window.scrollTo(0, 0);
+        }
         if (typingPanel !== current) startTitleLoop(current);
+      };
+
+      const focusCurrentTitle = () => {
+        const title = panels[current].querySelector('h1');
+        try {
+          title.focus({ preventScroll: true });
+        } catch (error) {
+          if (!(error instanceof TypeError)) throw error;
+          title.focus();
+        }
       };
 
       const go = (index, focusContent = true) => {
@@ -2985,7 +3006,7 @@ pnpm designer</pre>
         current = index;
         persist();
         update();
-        if (focusContent) panels[current].querySelector('h1').focus({ preventScroll: true });
+        if (focusContent) focusCurrentTitle();
       };
 
       window.addEventListener('scroll', () => {
@@ -3035,7 +3056,7 @@ pnpm designer</pre>
         current = 0;
         persist();
         update();
-        panels[current].querySelector('h1').focus({ preventScroll: true });
+        focusCurrentTitle();
       });
 
       update();
