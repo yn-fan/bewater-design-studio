@@ -2335,6 +2335,11 @@
       transform: translateY(-4px);
     }
 
+    .sidebar > .progress-wrap {
+      position: relative;
+      z-index: 2;
+    }
+
     .setup-flow {
       overflow: hidden;
       border: 1px solid var(--collins-line);
@@ -2591,6 +2596,15 @@
         gap: 18px;
         padding: 20px;
       }
+
+      .sidebar > .progress-wrap {
+        gap: 8px;
+        font-size: 11px;
+      }
+
+      .sidebar > .progress-wrap .progress {
+        width: 64px;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -2636,6 +2650,10 @@
           <div class="brand-by">Bewater Design Studio</div>
         </div>
       </div>
+      <div class="progress-wrap">
+        <span id="progressText">0 / 5 完成</span>
+        <div class="progress" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
+      </div>
       <nav class="steps" id="tutorialSteps" aria-label="教程步骤">
         <button class="step-button" data-screen="0" aria-current="step"><span class="step-number">1</span><span>了解实验</span></button>
         <button class="step-button" data-screen="1"><span class="step-number">2</span><span>安装与启动</span></button>
@@ -2650,14 +2668,6 @@
     </aside>
 
     <main class="main">
-      <div class="topline">
-        <span class="eyebrow">Bewater Design Studio</span>
-        <div class="progress-wrap">
-          <span id="progressText">0 / 5 完成</span>
-          <div class="progress" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
-        </div>
-      </div>
-
       <section class="screen" data-screen-panel="0" data-active="true">
         <h1 tabindex="-1">AI 赋能的 Design to Code 工作流实验。</h1>
         <p class="lead">Bewater Design Studio 正在验证一条更短的路径：让设计师借助 AI，把设计意图转成可复用的前端代码。你可以用它修复视觉问题、制作主题或搭建 UI，再由开发接入正式产品。</p>
