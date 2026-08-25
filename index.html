@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="Bewater Design Studio">
-  <title>Bewater Design Studio · AI UX-to-Code 工作流实验</title>
+  <title>Bewater Design Studio · AI Design to Code 工作流实验</title>
   <style>
     :root {
       --color-bg: #f5f6f8;
@@ -1484,18 +1484,18 @@
     }
     .screen[data-active="true"] { animation: screenReveal .8s cubic-bezier(.19, 1, .22, 1) both; }
     .screen[data-screen-panel="0"] { padding-top: clamp(48px, 8vh, 100px); }
-    .screen[data-screen-panel="0"]::before { text-align: center; }
+    .screen[data-screen-panel="0"]::before { text-align: left; }
     .screen[data-screen-panel="0"] > h1 {
       max-width: 920px;
-      margin-inline: auto;
-      text-align: center;
+      margin-inline: 0;
+      text-align: left;
     }
     .screen[data-screen-panel="0"] > .lead {
       max-width: 690px;
-      margin-inline: auto;
-      text-align: center;
+      margin-inline: 0;
+      text-align: left;
     }
-    .screen[data-screen-panel="0"] > .hero-actions { justify-content: center; }
+    .screen[data-screen-panel="0"] > .hero-actions { justify-content: flex-start; }
     .screen[data-screen-panel="0"] > .grid-3 { margin-top: clamp(96px, 17vh, 190px); }
 
     .grid-3 {
@@ -2643,8 +2643,8 @@
       </div>
 
       <section class="screen" data-screen-panel="0" data-active="true">
-        <h1 tabindex="-1">AI 赋能的 UX-to-Code 工作流实验。</h1>
-        <p class="lead">Bewater Design Studio 正在验证一条更短的路径：让设计师借助 AI，把 UX 意图转成可复用的前端代码。你可以用它修复视觉问题、制作主题或搭建 UI，再由开发接入正式产品。</p>
+        <h1 tabindex="-1">AI 赋能的 Design to Code 工作流实验。</h1>
+        <p class="lead">Bewater Design Studio 正在验证一条更短的路径：让设计师借助 AI，把设计意图转成可复用的前端代码。你可以用它修复视觉问题、制作主题或搭建 UI，再由开发接入正式产品。</p>
         <div class="hero-actions">
           <button class="primary" data-next>开始设置</button>
           <a class="secondary" href="http://localhost:3000/designer-studio" target="_blank" rel="noreferrer">打开已安装的 Studio</a>
