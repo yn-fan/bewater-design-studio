@@ -2981,13 +2981,15 @@ pnpm designer</pre>
         progressText.textContent = `${completed.size} / ${panels.length} 完成`;
         prevButton.hidden = current === 0;
         nextButton.textContent = current === panels.length - 1 ? '完成教程' : '下一步';
-        try {
-          window.scrollTo({ top: 0, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
-        } catch (error) {
-          if (!(error instanceof TypeError)) throw error;
-          window.scrollTo(0, 0);
-        }
         if (typingPanel !== current) startTitleLoop(current);
+      };
+
+      const resetScroll = () => {
+        const scrollingElement = document.scrollingElement || document.documentElement;
+        scrollingElement.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        window.scrollTo(0, 0);
       };
 
       const focusCurrentTitle = () => {
@@ -3007,6 +3009,8 @@ pnpm designer</pre>
         persist();
         update();
         if (focusContent) focusCurrentTitle();
+        resetScroll();
+        window.requestAnimationFrame(resetScroll);
       };
 
       window.addEventListener('scroll', () => {
