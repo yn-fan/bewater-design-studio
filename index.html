@@ -2379,6 +2379,16 @@
       width: auto;
     }
 
+    .footer-nav .next-button:disabled {
+      color: #777773;
+      border-color: #d5d5d1;
+      background: #e7e7e3;
+      box-shadow: none;
+      cursor: not-allowed;
+      opacity: 1;
+      transform: none;
+    }
+
     .setup-flow {
       overflow: hidden;
       border: 1px solid var(--collins-line);
@@ -2956,6 +2966,7 @@ pnpm designer</pre>
       const prevButton = document.getElementById('prevButton');
       const nextButton = document.getElementById('nextButton');
       const footerNav = document.querySelector('.footer-nav');
+      const setupChecks = [...document.querySelectorAll('[data-screen-panel="1"] [data-check]')];
       const toast = document.getElementById('toast');
       const sidebar = document.querySelector('.sidebar');
       const storageKey = 'bewater-design-studio-onboarding';
@@ -3061,6 +3072,10 @@ pnpm designer</pre>
         progressText.textContent = `${completed.size} / ${panels.length} 完成`;
         footerNav.hidden = current === 0;
         prevButton.hidden = current === 0;
+        prevButton.textContent = current === 1 ? '跳过' : '上一步';
+        const setupReady = setupChecks.every(input => input.checked);
+        nextButton.disabled = current === 1 && !setupReady;
+        nextButton.title = nextButton.disabled ? '完成上方 3 项后继续' : '';
         nextButton.textContent = current === panels.length - 1 ? '完成教程' : '下一步';
         if (typingPanel !== current) startTitleLoop(current);
       };
@@ -3083,9 +3098,9 @@ pnpm designer</pre>
         }
       };
 
-      const go = (index, focusContent = true) => {
+      const go = (index, focusContent = true, markCurrent = true) => {
         if (index < 0 || index >= panels.length) return;
-        if (index > current) completed.add(current);
+        if (index > current && markCurrent) completed.add(current);
         current = index;
         persist();
         update();
@@ -3099,7 +3114,10 @@ pnpm designer</pre>
       }, { passive: true });
       stepButtons.forEach((button, index) => button.addEventListener('click', () => go(index)));
       document.querySelectorAll('[data-next]').forEach(button => button.addEventListener('click', () => go(current + 1)));
-      prevButton.addEventListener('click', () => go(current - 1));
+      prevButton.addEventListener('click', () => {
+        if (current === 1) go(current + 1, true, false);
+        else go(current - 1);
+      });
       nextButton.addEventListener('click', () => {
         completed.add(current);
         persist();
@@ -3133,7 +3151,10 @@ pnpm designer</pre>
       document.querySelectorAll('[data-check]').forEach(input => {
         const key = `bewater-check-${input.dataset.check}`;
         input.checked = storage.get(key) === 'true';
-        input.addEventListener('change', () => storage.set(key, String(input.checked)));
+        input.addEventListener('change', () => {
+          storage.set(key, String(input.checked));
+          if (current === 1) update();
+        });
       });
 
       document.getElementById('resetProgress').addEventListener('click', () => {
