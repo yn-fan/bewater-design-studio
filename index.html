@@ -2346,6 +2346,39 @@
       z-index: 2;
     }
 
+    .main {
+      padding-bottom: 128px;
+    }
+
+    .footer-nav {
+      position: fixed;
+      right: clamp(20px, 4vw, 56px);
+      bottom: 20px;
+      z-index: 18;
+      width: auto;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin: 0;
+      padding: 8px;
+      border: 1px solid color-mix(in srgb, var(--collins-line), transparent 16%);
+      border-radius: 999px;
+      background: rgb(248 248 247 / 76%);
+      box-shadow: 0 12px 36px rgb(20 7 0 / 10%);
+      backdrop-filter: blur(16px) saturate(120%);
+      -webkit-backdrop-filter: blur(16px) saturate(120%);
+    }
+
+    .footer-nav[hidden] {
+      display: none;
+    }
+
+    .footer-nav .secondary,
+    .footer-nav .next-button {
+      min-width: 104px;
+      width: auto;
+    }
+
     .setup-flow {
       overflow: hidden;
       border: 1px solid var(--collins-line);
@@ -2610,6 +2643,20 @@
 
       .sidebar > .progress-wrap .progress {
         width: 64px;
+      }
+
+      .footer-nav {
+        right: 14px;
+        bottom: 12px;
+        left: 14px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border-radius: 16px;
+      }
+
+      .footer-nav .secondary,
+      .footer-nav .next-button {
+        width: 100%;
       }
     }
 
@@ -2908,6 +2955,7 @@ pnpm designer</pre>
       const progressText = document.getElementById('progressText');
       const prevButton = document.getElementById('prevButton');
       const nextButton = document.getElementById('nextButton');
+      const footerNav = document.querySelector('.footer-nav');
       const toast = document.getElementById('toast');
       const sidebar = document.querySelector('.sidebar');
       const storageKey = 'bewater-design-studio-onboarding';
@@ -3011,6 +3059,7 @@ pnpm designer</pre>
         });
         progressBar.style.width = `${completed.size / panels.length * 100}%`;
         progressText.textContent = `${completed.size} / ${panels.length} 完成`;
+        footerNav.hidden = current === 0;
         prevButton.hidden = current === 0;
         nextButton.textContent = current === panels.length - 1 ? '完成教程' : '下一步';
         if (typingPanel !== current) startTitleLoop(current);
