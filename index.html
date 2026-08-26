@@ -2780,7 +2780,7 @@
             <span class="setup-index">01</span>
             <div class="setup-copy">
               <h2>下载并解压项目</h2>
-              <p>先将项目包下载到本地并解压，再让 Workbuddy 打开其中的 <code>web</code> 文件夹。不要直接上传压缩包或单个文件。</p>
+              <p>先将项目包下载到本地，并解压到一个新的空文件夹，再让 Workbuddy 打开它。不要覆盖旧版本，也不要直接上传压缩包或单个文件。</p>
             </div>
             <div class="setup-action">
               <a class="download-link" href="https://fcns5lb15f18.feishu.cn/drive/folder/EwtYfCWkUlDtQadqq4VcdfjQnxb?from=from_copylink" target="_blank" rel="noreferrer">
@@ -2806,7 +2806,7 @@
                   <button class="copy-button" data-copy="installCommands">复制命令</button>
                 </div>
                 <pre id="installCommands">corepack enable
-pnpm install
+pnpm designer:setup
 pnpm designer</pre>
               </div>
               <label class="setup-todo" for="check-browser">
@@ -2839,7 +2839,7 @@ pnpm designer</pre>
             </div>
           </section>
         </div>
-        <div class="callout"><strong>看到权限错误？</strong> 跳过 <code>corepack enable</code>，改为运行 <code>corepack pnpm install</code> 和 <code>corepack pnpm designer</code>。</div>
+        <div class="callout"><strong>看到权限错误？</strong> 跳过 <code>corepack enable</code>，改为运行 <code>corepack pnpm designer:setup</code> 和 <code>corepack pnpm designer</code>。</div>
       </section>
 
       <section class="screen" data-screen-panel="2">
